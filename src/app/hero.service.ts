@@ -15,33 +15,13 @@ const httpOptions = {
 })
 export class HeroService {
 
-  private heroesUrl = 'http://192.168.0.73:3000/heroes';
+  private heroesUrl = 'http://128.10.3.39:3100/heroes';
   // private heroesUrl = 'api/heroes';
 
   constructor(
     private http: HttpClient,
     private messageService: MessageService
   ) { }
-
-    /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
 
   getHeroes(): Observable<Hero[]> {
     // TODO: send the message _after_ fetching the heroes
@@ -61,6 +41,26 @@ export class HeroService {
         tap(_ => this.log(`fetched hero id=$(id)`)),
         catchError(this.handleError<Hero>(`getHero id=${id}`))
       );
+  }
+
+  /**
+ * Handle Http operation that failed.
+ * Let the app continue.
+ * @param operation - name of the operation that failed
+ * @param result - optional value to return as the observable result
+ */
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 
   /** Log a HeroService message with the MessageService */
